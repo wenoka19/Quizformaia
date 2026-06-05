@@ -6,16 +6,7 @@
 <title>Diagnostic IA — Récupérez 5h par semaine</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --accent:#e94560;
-  --accent-light:#ff6b6b;
-  --bg:#fff;
-  --text:#1a1a2e;
-  --muted:#666;
-  --border:#e0e0e0;
-  --radius:16px;
-  --card:#f5f5f5;
-}
+:root{--accent:#e94560;--accent-light:#ff6b6b;--bg:#fff;--text:#1a1a2e;--muted:#666;--border:#e0e0e0;--radius:16px;--card:#f5f5f5;}
 html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia,serif}
 .screen{display:none;flex-direction:column;min-height:100vh;padding:24px 20px 40px;max-width:430px;margin:0 auto}
 .screen.active{display:flex}
@@ -28,10 +19,13 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
 .option{background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;font-size:15px;color:var(--text);cursor:pointer;transition:all .18s;font-family:sans-serif;text-align:left;line-height:1.4;display:flex;align-items:center;gap:12px;min-height:56px;}
 .option:active{transform:scale(0.98)}
 .option.selected{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:600}
-.opt-icon{width:36px;height:36px;border-radius:50%;background:#fff;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
-.option.selected .opt-icon{border-color:rgba(255,255,255,.4)}
+.opt-icon{width:36px;height:36px;border-radius:10px;background:#fff;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:7px;}
+.opt-icon svg{width:100%;height:100%}
+.option.selected .opt-icon{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.4)}
+.option.selected .opt-icon svg{stroke:#fff;fill:none}
+.option.selected .opt-icon svg.filled{fill:#fff;stroke:none}
 .other-input{display:none;margin-top:10px;width:100%;padding:13px 14px;border:1.5px solid var(--accent);border-radius:var(--radius);font-size:15px;font-family:sans-serif;color:var(--text);outline:none;background:#fff8f8}
-.hero{text-align:center;padding:16px 0;display:flex;flex-direction:column;align-items:center;gap:18px;flex:1;justify-content:center}
+.hero{text-align:center;padding:40px 0 16px;display:flex;flex-direction:column;align-items:center;gap:18px;flex:1}
 .hero-badge{background:#fff0f0;color:var(--accent);font-size:11px;font-weight:700;padding:6px 16px;border-radius:99px;letter-spacing:1px;text-transform:uppercase;font-family:sans-serif}
 .hero-title{font-size:28px;font-weight:700;color:var(--text);line-height:1.2;letter-spacing:-.5px}
 .hero-title span{color:var(--accent)}
@@ -56,10 +50,21 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
 .capture-box{background:#fff8f8;border:1.5px solid #ffd0d8;border-radius:var(--radius);padding:20px;margin-top:8px;width:100%}
 .capture-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;font-family:sans-serif}
 .capture-sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:16px;font-family:sans-serif}
-.phone-wrap{display:flex;gap:8px;margin-bottom:12px}
-.country-select{padding:13px 10px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;font-family:sans-serif;background:#fff;color:var(--text);outline:none;flex-shrink:0;width:110px}
+.phone-row{display:flex;gap:8px;margin-bottom:12px;align-items:stretch}
+.country-selector{position:relative;flex-shrink:0;width:120px}
+.country-search{width:100%;height:100%;padding:10px 8px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:12px;font-family:sans-serif;color:var(--text);outline:none;background:#fff;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:50px;display:flex;align-items:center}
+.country-search:focus{border-color:var(--accent)}
+.country-dropdown{display:none;position:absolute;top:100%;left:0;width:280px;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);max-height:220px;overflow-y:auto;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.12);margin-top:4px}
+.country-dropdown.open{display:block}
+.country-search-input{width:100%;padding:10px 14px;border:none;border-bottom:1px solid var(--border);font-size:14px;font-family:sans-serif;outline:none;color:var(--text)}
+.country-item{padding:11px 14px;cursor:pointer;font-size:14px;font-family:sans-serif;display:flex;align-items:center;gap:10px;transition:background .1s}
+.country-item:hover{background:#fff0f0}
+.country-item.selected-item{background:#fff0f0;color:var(--accent);font-weight:600}
+.country-flag{font-size:18px;line-height:1}
+.country-name{flex:1;color:var(--text)}
+.country-code-badge{font-size:12px;color:var(--muted);font-family:monospace}
 .phone-input{flex:1;padding:13px 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-size:15px;font-family:sans-serif;color:var(--text);outline:none;background:#fff;min-width:0}
-.phone-input:focus,.country-select:focus{border-color:var(--accent)}
+.phone-input:focus{border-color:var(--accent)}
 .whatsapp-btn{background:#25D366;color:#fff;border:none;border-radius:var(--radius);padding:16px;font-size:15px;font-weight:700;cursor:pointer;width:100%;font-family:sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px}
 .whatsapp-btn:active{opacity:.85}
 .skip-btn{background:none;border:none;color:var(--muted);font-size:13px;font-family:sans-serif;cursor:pointer;padding:10px;width:100%;text-align:center;text-decoration:underline;margin-top:4px}
@@ -67,6 +72,43 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
 </style>
 </head>
 <body>
+
+<!-- SVG ICONS LIBRARY -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ic-person" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="ic-team" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="ic-building" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7h.01M12 7h.01M16 7h.01M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01"/></symbol>
+  <symbol id="ic-rocket" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+  <symbol id="ic-mail" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="ic-inbox" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="ic-search" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></symbol>
+  <symbol id="ic-trash" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+  <symbol id="ic-filter" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
+  <symbol id="ic-repeat" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+  <symbol id="ic-edit" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="ic-smile" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-meh" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-frown" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></symbol>
+  <symbol id="ic-alert" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="ic-file" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+  <symbol id="ic-files" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+  <symbol id="ic-book" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="ic-books" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="ic-archive" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></symbol>
+  <symbol id="ic-eye" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="ic-chart" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="ic-help" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="ic-zap" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="ic-lock" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="ic-gift" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+  <symbol id="ic-dollar" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+  <symbol id="ic-diamond" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z"/></symbol>
+  <symbol id="ic-trophy" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></symbol>
+  <symbol id="ic-writepad" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+</svg>
+
+<!-- HERO -->
 <div id="s0" class="screen active">
   <div class="logo">Diagnostic IA</div>
   <div class="hero">
@@ -79,159 +121,185 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
       <div class="stat"><div class="stat-num">12</div><div class="stat-lbl">Questions</div></div>
       <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">Gratuit</div></div>
     </div>
-    <button class="big-btn" onclick="goTo('s1')">COMMENCER LE DIAGNOSTIC ?</button>
+    <button class="big-btn" onclick="goTo('s1')">COMMENCER LE DIAGNOSTIC</button>
   </div>
 </div>
+
+<!-- Q1 -->
 <div id="s1" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:8%"></div></div>
   <div class="prog-label">1 / 12</div>
   <div class="question">Quel est votre poste actuel ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s2',1,'Employé / Collaborateur')"><span class="opt-icon">??</span>Employé / Collaborateur</button>
-    <button class="option" onclick="pick(this,'s2',1,'Chef équipe / Manager')"><span class="opt-icon">??</span>Chef d'équipe / Manager</button>
-    <button class="option" onclick="pick(this,'s2',1,'Directeur / Responsable')"><span class="opt-icon">??</span>Directeur / Responsable</button>
-    <button class="option" onclick="pick(this,'s2',1,'PDG / Dirigeant / Entrepreneur')"><span class="opt-icon">??</span>PDG / Dirigeant / Entrepreneur</button>
+    <button class="option" onclick="pick(this,'s2',1,'Employé / Collaborateur')"><span class="opt-icon"><svg><use href="#ic-person"/></svg></span>Employé / Collaborateur</button>
+    <button class="option" onclick="pick(this,'s2',1,'Chef équipe / Manager')"><span class="opt-icon"><svg><use href="#ic-team"/></svg></span>Chef d'équipe / Manager</button>
+    <button class="option" onclick="pick(this,'s2',1,'Directeur / Responsable')"><span class="opt-icon"><svg><use href="#ic-building"/></svg></span>Directeur / Responsable</button>
+    <button class="option" onclick="pick(this,'s2',1,'PDG / Dirigeant / Entrepreneur')"><span class="opt-icon"><svg><use href="#ic-rocket"/></svg></span>PDG / Dirigeant / Entrepreneur</button>
   </div>
 </div>
+
+<!-- Q2 -->
 <div id="s2" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:17%"></div></div>
   <div class="prog-label">2 / 12</div>
   <div class="question">Combien d'emails professionnels recevez-vous par jour ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s3',2,'Moins de 20')"><span class="opt-icon">??</span>Moins de 20</button>
-    <button class="option" onclick="pick(this,'s3',2,'Entre 20 et 50')"><span class="opt-icon">??</span>Entre 20 et 50</button>
-    <button class="option" onclick="pick(this,'s3',2,'Entre 50 et 100')"><span class="opt-icon">??</span>Entre 50 et 100</button>
-    <button class="option" onclick="pick(this,'s3',2,'Plus de 100')"><span class="opt-icon">??</span>Plus de 100</button>
+    <button class="option" onclick="pick(this,'s3',2,'Moins de 20')"><span class="opt-icon"><svg><use href="#ic-mail"/></svg></span>Moins de 20</button>
+    <button class="option" onclick="pick(this,'s3',2,'Entre 20 et 50')"><span class="opt-icon"><svg><use href="#ic-inbox"/></svg></span>Entre 20 et 50</button>
+    <button class="option" onclick="pick(this,'s3',2,'Entre 50 et 100')"><span class="opt-icon"><svg><use href="#ic-inbox"/></svg></span>Entre 50 et 100</button>
+    <button class="option" onclick="pick(this,'s3',2,'Plus de 100')"><span class="opt-icon"><svg><use href="#ic-alert"/></svg></span>Plus de 100</button>
   </div>
 </div>
+
+<!-- Q3 -->
 <div id="s3" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:25%"></div></div>
   <div class="prog-label">3 / 12</div>
   <div class="question">Combien de temps passez-vous à lire vos emails chaque matin ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s4',3,'Moins de 30 min')"><span class="opt-icon">?</span>Moins de 30 minutes</button>
-    <button class="option" onclick="pick(this,'s4',3,'30 min à 1h')"><span class="opt-icon">??</span>Entre 30 min et 1h</button>
-    <button class="option" onclick="pick(this,'s4',3,'1h à 2h')"><span class="opt-icon">??</span>Entre 1h et 2h</button>
-    <button class="option" onclick="pick(this,'s4',3,'Plus de 2h')"><span class="opt-icon">??</span>Plus de 2h</button>
+    <button class="option" onclick="pick(this,'s4',3,'Moins de 30 min')"><span class="opt-icon"><svg><use href="#ic-zap"/></svg></span>Moins de 30 minutes</button>
+    <button class="option" onclick="pick(this,'s4',3,'30 min à 1h')"><span class="opt-icon"><svg><use href="#ic-clock"/></svg></span>Entre 30 min et 1h</button>
+    <button class="option" onclick="pick(this,'s4',3,'1h à 2h')"><span class="opt-icon"><svg><use href="#ic-clock"/></svg></span>Entre 1h et 2h</button>
+    <button class="option" onclick="pick(this,'s4',3,'Plus de 2h')"><span class="opt-icon"><svg><use href="#ic-alert"/></svg></span>Plus de 2h</button>
   </div>
 </div>
+
+<!-- Q4 avec Autre -->
 <div id="s4" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:33%"></div></div>
   <div class="prog-label">4 / 12</div>
   <div class="question">Laquelle de ces situations vous arrive le plus souvent avec vos emails ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s5',4,'Emails importants noyés')"><span class="opt-icon">??</span>Je rate des emails importants noyés dans les autres</button>
-    <button class="option" onclick="pick(this,'s5',4,'Emails non pertinents')"><span class="opt-icon">???</span>Je perds du temps sur des emails qui ne me concernent pas</button>
-    <button class="option" onclick="pick(this,'s5',4,'Difficulté à prioriser')"><span class="opt-icon">??</span>Je ne sais pas quoi prioriser le matin</button>
-    <button class="option" onclick="pick(this,'s5',4,'Réponses répétitives')"><span class="opt-icon">??</span>Je rédige les mêmes types de réponses en boucle</button>
-    <button class="option" id="ob4" onclick="showOther('ob4','oi4','s5',4)"><span class="opt-icon">??</span>Autre</button>
+    <button class="option" onclick="pick(this,'s5',4,'Emails importants noyés')"><span class="opt-icon"><svg><use href="#ic-search"/></svg></span>Je rate des emails importants noyés dans les autres</button>
+    <button class="option" onclick="pick(this,'s5',4,'Emails non pertinents')"><span class="opt-icon"><svg><use href="#ic-trash"/></svg></span>Je perds du temps sur des emails qui ne me concernent pas</button>
+    <button class="option" onclick="pick(this,'s5',4,'Difficulté à prioriser')"><span class="opt-icon"><svg><use href="#ic-filter"/></svg></span>Je ne sais pas quoi prioriser le matin</button>
+    <button class="option" onclick="pick(this,'s5',4,'Réponses répétitives')"><span class="opt-icon"><svg><use href="#ic-repeat"/></svg></span>Je rédige les mêmes types de réponses en boucle</button>
+    <button class="option" id="ob4" onclick="showOther('ob4','oi4','s5',4)"><span class="opt-icon"><svg><use href="#ic-edit"/></svg></span>Autre</button>
     <input class="other-input" id="oi4" placeholder="Décrivez votre situation..." oninput="saveOther(4,this.value)">
   </div>
 </div>
+
+<!-- Q5 -->
 <div id="s5" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:42%"></div></div>
   <div class="prog-label">5 / 12</div>
   <div class="question">Quand vous revenez de vacances, comment vous sentez-vous face à vos emails ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s6',5,'Serein')"><span class="opt-icon">??</span>Serein, je gère facilement le retard</button>
-    <button class="option" onclick="pick(this,'s6',5,'Un peu stressé')"><span class="opt-icon">??</span>Un peu stressé mais je m'en sors</button>
-    <button class="option" onclick="pick(this,'s6',5,'Très stressé')"><span class="opt-icon">??</span>Très stressé, ça me prend une demi-journée</button>
-    <button class="option" onclick="pick(this,'s6',5,'Submergé')"><span class="opt-icon">??</span>Submergé, certains restent sans réponse</button>
+    <button class="option" onclick="pick(this,'s6',5,'Serein')"><span class="opt-icon"><svg><use href="#ic-smile"/></svg></span>Serein, je gère facilement le retard</button>
+    <button class="option" onclick="pick(this,'s6',5,'Un peu stressé')"><span class="opt-icon"><svg><use href="#ic-meh"/></svg></span>Un peu stressé mais je m'en sors</button>
+    <button class="option" onclick="pick(this,'s6',5,'Très stressé')"><span class="opt-icon"><svg><use href="#ic-frown"/></svg></span>Très stressé, ça me prend une demi-journée</button>
+    <button class="option" onclick="pick(this,'s6',5,'Submergé')"><span class="opt-icon"><svg><use href="#ic-alert"/></svg></span>Submergé, certains restent sans réponse</button>
   </div>
 </div>
+
+<!-- Q6 -->
 <div id="s6" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:50%"></div></div>
   <div class="prog-label">6 / 12</div>
   <div class="question">Combien de documents devez-vous lire par semaine ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s7',6,'Moins de 5')"><span class="opt-icon">??</span>Moins de 5</button>
-    <button class="option" onclick="pick(this,'s7',6,'Entre 5 et 10')"><span class="opt-icon">??</span>Entre 5 et 10</button>
-    <button class="option" onclick="pick(this,'s7',6,'Entre 10 et 20')"><span class="opt-icon">??</span>Entre 10 et 20</button>
-    <button class="option" onclick="pick(this,'s7',6,'Plus de 20')"><span class="opt-icon">???</span>Plus de 20</button>
+    <button class="option" onclick="pick(this,'s7',6,'Moins de 5')"><span class="opt-icon"><svg><use href="#ic-file"/></svg></span>Moins de 5</button>
+    <button class="option" onclick="pick(this,'s7',6,'Entre 5 et 10')"><span class="opt-icon"><svg><use href="#ic-files"/></svg></span>Entre 5 et 10</button>
+    <button class="option" onclick="pick(this,'s7',6,'Entre 10 et 20')"><span class="opt-icon"><svg><use href="#ic-book"/></svg></span>Entre 10 et 20</button>
+    <button class="option" onclick="pick(this,'s7',6,'Plus de 20')"><span class="opt-icon"><svg><use href="#ic-books"/></svg></span>Plus de 20</button>
   </div>
 </div>
+
+<!-- Q7 -->
 <div id="s7" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:58%"></div></div>
   <div class="prog-label">7 / 12</div>
   <div class="question">En moyenne, combien de temps vous prend la lecture d'un document professionnel ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s8',7,'Moins de 15 min')"><span class="opt-icon">?</span>Moins de 15 minutes</button>
-    <button class="option" onclick="pick(this,'s8',7,'15 à 30 min')"><span class="opt-icon">??</span>Entre 15 et 30 minutes</button>
-    <button class="option" onclick="pick(this,'s8',7,'30 min à 1h')"><span class="opt-icon">??</span>Entre 30 min et 1h</button>
-    <button class="option" onclick="pick(this,'s8',7,'Plus 1h')"><span class="opt-icon">??</span>Plus d'1h</button>
+    <button class="option" onclick="pick(this,'s8',7,'Moins de 15 min')"><span class="opt-icon"><svg><use href="#ic-zap"/></svg></span>Moins de 15 minutes</button>
+    <button class="option" onclick="pick(this,'s8',7,'15 à 30 min')"><span class="opt-icon"><svg><use href="#ic-clock"/></svg></span>Entre 15 et 30 minutes</button>
+    <button class="option" onclick="pick(this,'s8',7,'30 min à 1h')"><span class="opt-icon"><svg><use href="#ic-clock"/></svg></span>Entre 30 min et 1h</button>
+    <button class="option" onclick="pick(this,'s8',7,'Plus 1h')"><span class="opt-icon"><svg><use href="#ic-alert"/></svg></span>Plus d'1h</button>
   </div>
 </div>
+
+<!-- Q8 -->
 <div id="s8" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:67%"></div></div>
   <div class="prog-label">8 / 12</div>
   <div class="question">Combien de documents rédigez-vous par semaine ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s9',8,'Moins de 3')"><span class="opt-icon">??</span>Moins de 3</button>
-    <button class="option" onclick="pick(this,'s9',8,'Entre 3 et 7')"><span class="opt-icon">??</span>Entre 3 et 7</button>
-    <button class="option" onclick="pick(this,'s9',8,'Entre 7 et 15')"><span class="opt-icon">??</span>Entre 7 et 15</button>
-    <button class="option" onclick="pick(this,'s9',8,'Plus de 15')"><span class="opt-icon">??</span>Plus de 15</button>
+    <button class="option" onclick="pick(this,'s9',8,'Moins de 3')"><span class="opt-icon"><svg><use href="#ic-writepad"/></svg></span>Moins de 3</button>
+    <button class="option" onclick="pick(this,'s9',8,'Entre 3 et 7')"><span class="opt-icon"><svg><use href="#ic-writepad"/></svg></span>Entre 3 et 7</button>
+    <button class="option" onclick="pick(this,'s9',8,'Entre 7 et 15')"><span class="opt-icon"><svg><use href="#ic-files"/></svg></span>Entre 7 et 15</button>
+    <button class="option" onclick="pick(this,'s9',8,'Plus de 15')"><span class="opt-icon"><svg><use href="#ic-books"/></svg></span>Plus de 15</button>
   </div>
 </div>
+
+<!-- Q9 -->
 <div id="s9" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:75%"></div></div>
   <div class="prog-label">9 / 12</div>
   <div class="question">Combien de temps vous prend la rédaction d'un document professionnel complet ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s10',9,'Moins de 30 min')"><span class="opt-icon">?</span>Moins de 30 minutes</button>
-    <button class="option" onclick="pick(this,'s10',9,'30 min à 1h')"><span class="opt-icon">??</span>Entre 30 min et 1h</button>
-    <button class="option" onclick="pick(this,'s10',9,'1h à 3h')"><span class="opt-icon">??</span>Entre 1h et 3h</button>
-    <button class="option" onclick="pick(this,'s10',9,'Plus de 3h')"><span class="opt-icon">??</span>Plus de 3h</button>
+    <button class="option" onclick="pick(this,'s10',9,'Moins de 30 min')"><span class="opt-icon"><svg><use href="#ic-zap"/></svg></span>Moins de 30 minutes</button>
+    <button class="option" onclick="pick(this,'s10',9,'30 min à 1h')"><span class="opt-icon"><svg><use href="#ic-clock"/></svg></span>Entre 30 min et 1h</button>
+    <button class="option" onclick="pick(this,'s10',9,'1h à 3h')"><span class="opt-icon"><svg><use href="#ic-clock"/></svg></span>Entre 1h et 3h</button>
+    <button class="option" onclick="pick(this,'s10',9,'Plus de 3h')"><span class="opt-icon"><svg><use href="#ic-alert"/></svg></span>Plus de 3h</button>
   </div>
 </div>
+
+<!-- Q10 avec Autre -->
 <div id="s10" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:83%"></div></div>
   <div class="prog-label">10 / 12</div>
   <div class="question">Avec ce volume de documents, laquelle de ces situations vous pèse le plus ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s11',10,'Lire prend trop de temps')"><span class="opt-icon">??</span>Lire autant de documents me prend un temps fou</button>
-    <button class="option" onclick="pick(this,'s11',10,'Rédiger en boucle')"><span class="opt-icon">??</span>Rédiger les mêmes types de documents en boucle</button>
-    <button class="option" onclick="pick(this,'s11',10,'Survoler sans assimiler')"><span class="opt-icon">??</span>Je survole sans tout assimiler par manque de temps</button>
-    <button class="option" onclick="pick(this,'s11',10,'Syntheses equipe')"><span class="opt-icon">??</span>Préparer des synthèses pour mon équipe</button>
-    <button class="option" id="ob10" onclick="showOther('ob10','oi10','s11',10)"><span class="opt-icon">??</span>Autre</button>
+    <button class="option" onclick="pick(this,'s11',10,'Lire prend trop de temps')"><span class="opt-icon"><svg><use href="#ic-eye"/></svg></span>Lire autant de documents me prend un temps fou</button>
+    <button class="option" onclick="pick(this,'s11',10,'Rédiger en boucle')"><span class="opt-icon"><svg><use href="#ic-repeat"/></svg></span>Rédiger les mêmes types de documents en boucle</button>
+    <button class="option" onclick="pick(this,'s11',10,'Survoler sans assimiler')"><span class="opt-icon"><svg><use href="#ic-eye"/></svg></span>Je survole sans tout assimiler par manque de temps</button>
+    <button class="option" onclick="pick(this,'s11',10,'Synthèses équipe')"><span class="opt-icon"><svg><use href="#ic-chart"/></svg></span>Préparer des synthèses pour mon équipe</button>
+    <button class="option" id="ob10" onclick="showOther('ob10','oi10','s11',10)"><span class="opt-icon"><svg><use href="#ic-edit"/></svg></span>Autre</button>
     <input class="other-input" id="oi10" placeholder="Décrivez votre situation..." oninput="saveOther(10,this.value)">
   </div>
 </div>
+
+<!-- Q11 avec Autre -->
 <div id="s11" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:92%"></div></div>
   <div class="prog-label">11 / 12</div>
   <div class="question">Qu'est-ce qui vous empêche d'utiliser l'IA au quotidien ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'s12',11,'Ne sait pas comment utiliser')"><span class="opt-icon">?</span>Je ne sais pas concrètement comment l'utiliser</button>
-    <button class="option" onclick="pick(this,'s12',11,'Peur de faire des erreurs')"><span class="opt-icon">??</span>J'ai peur de faire des erreurs ou de perdre du temps</button>
-    <button class="option" onclick="pick(this,'s12',11,'Pas sur que ca marche')"><span class="opt-icon">??</span>Je ne suis pas sûr que ça marche pour mon métier</button>
-    <button class="option" onclick="pick(this,'s12',11,'Confidentialité')"><span class="opt-icon">??</span>Les questions de confidentialité me freinent</button>
-    <button class="option" id="ob11" onclick="showOther('ob11','oi11','s12',11)"><span class="opt-icon">??</span>Autre</button>
+    <button class="option" onclick="pick(this,'s12',11,'Ne sait pas comment utiliser')"><span class="opt-icon"><svg><use href="#ic-help"/></svg></span>Je ne sais pas concrètement comment l'utiliser</button>
+    <button class="option" onclick="pick(this,'s12',11,'Peur de faire des erreurs')"><span class="opt-icon"><svg><use href="#ic-frown"/></svg></span>J'ai peur de faire des erreurs ou de perdre du temps</button>
+    <button class="option" onclick="pick(this,'s12',11,'Pas sûr que ça marche')"><span class="opt-icon"><svg><use href="#ic-meh"/></svg></span>Je ne suis pas sûr que ça marche pour mon métier</button>
+    <button class="option" onclick="pick(this,'s12',11,'Confidentialité')"><span class="opt-icon"><svg><use href="#ic-lock"/></svg></span>Les questions de confidentialité me freinent</button>
+    <button class="option" id="ob11" onclick="showOther('ob11','oi11','s12',11)"><span class="opt-icon"><svg><use href="#ic-edit"/></svg></span>Autre</button>
     <input class="other-input" id="oi11" placeholder="Décrivez votre blocage..." oninput="saveOther(11,this.value)">
   </div>
 </div>
+
+<!-- Q12 -->
 <div id="s12" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:100%"></div></div>
   <div class="prog-label">12 / 12</div>
   <div class="question">Si en 10 jours, 15 min/jour, je vous apprenais à utiliser une IA gratuite qui lit, trie, répond et suit vos emails ET lit, résume, analyse, synthétise et produit vos documents — 24h/24, 7j/7, sans repos — combien seriez-vous prêt à investir ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'result',12,'Gratuit')"><span class="opt-icon">??</span>Rien, je veux que ce soit gratuit</button>
-    <button class="option" onclick="pick(this,'result',12,'5000-10000 FCFA')"><span class="opt-icon">??</span>Entre 5 000 et 10 000 FCFA</button>
-    <button class="option" onclick="pick(this,'result',12,'10000-25000 FCFA')"><span class="opt-icon">??</span>Entre 10 000 et 25 000 FCFA</button>
-    <button class="option" onclick="pick(this,'result',12,'25000-50000 FCFA')"><span class="opt-icon">??</span>Entre 25 000 et 50 000 FCFA</button>
+    <button class="option" onclick="pick(this,'result',12,'Gratuit')"><span class="opt-icon"><svg><use href="#ic-gift"/></svg></span>Rien, je veux que ce soit gratuit</button>
+    <button class="option" onclick="pick(this,'result',12,'5000-10000 FCFA')"><span class="opt-icon"><svg><use href="#ic-dollar"/></svg></span>Entre 5 000 et 10 000 FCFA</button>
+    <button class="option" onclick="pick(this,'result',12,'10000-25000 FCFA')"><span class="opt-icon"><svg><use href="#ic-diamond"/></svg></span>Entre 10 000 et 25 000 FCFA</button>
+    <button class="option" onclick="pick(this,'result',12,'25000-50000 FCFA')"><span class="opt-icon"><svg><use href="#ic-trophy"/></svg></span>Entre 25 000 et 50 000 FCFA</button>
   </div>
 </div>
+
+<!-- RESULT -->
 <div id="result" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="result-wrap">
@@ -256,29 +324,17 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
       </div>
     </div>
     <div class="capture-box">
-      <div class="capture-title">?? Recevez votre guide gratuit sur WhatsApp</div>
+      <div class="capture-title">📲 Recevez votre guide gratuit sur WhatsApp</div>
       <div class="capture-sub">Je vous envoie immédiatement le guide d'utilisation de l'IA pour vos emails et documents. Gratuit, sans engagement.</div>
-      <div class="phone-wrap">
-        <select class="country-select" id="country-code">
-          <option value="+228">???? +228</option>
-          <option value="+225">???? +225</option>
-          <option value="+221">???? +221</option>
-          <option value="+237">???? +237</option>
-          <option value="+33">???? +33</option>
-          <option value="+32">???? +32</option>
-          <option value="+41">???? +41</option>
-          <option value="+212">???? +212</option>
-          <option value="+216">???? +216</option>
-          <option value="+213">???? +213</option>
-          <option value="+243">???? +243</option>
-          <option value="+242">???? +242</option>
-          <option value="+241">???? +241</option>
-          <option value="+234">???? +234</option>
-          <option value="+233">???? +233</option>
-          <option value="+1">???? +1</option>
-          <option value="+44">???? +44</option>
-        </select>
-        <input class="phone-input" id="phone-input" type="tel" placeholder="Ex: 90123456" inputmode="numeric">
+      <div class="phone-row">
+        <div class="country-selector">
+          <div class="country-search" id="country-display" onclick="toggleDropdown()">🇹🇬 +228</div>
+          <div class="country-dropdown" id="country-dropdown">
+            <input class="country-search-input" placeholder="🔍 Rechercher un pays..." oninput="filterCountries(this.value)" onclick="event.stopPropagation()">
+            <div id="country-list"></div>
+          </div>
+        </div>
+        <input class="phone-input" id="phone-input" type="tel" placeholder="Numéro de téléphone" inputmode="numeric">
       </div>
       <button class="whatsapp-btn" onclick="submitPhone()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -286,43 +342,154 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
       </button>
       <button class="skip-btn" onclick="goTo('s0')">Non merci, passer</button>
       <div class="success-box" id="success-box">
-        ? Parfait ! Vous recevrez le guide sur WhatsApp très prochainement.<br><br>
+        ✅ Parfait ! Vous recevrez le guide sur WhatsApp très prochainement.<br><br>
         <strong>Merci pour votre participation !</strong>
       </div>
     </div>
   </div>
 </div>
+
 <script>
 const SHEET_URL='https://script.google.com/macros/s/AKfycbxc5eZ7Ovigstd9ZvCqhSKQ-k0i24U2F8_LHH5yW2mQ4XugNaajff5mlWarGSvlBhnd/exec';
 const answers={};
-function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);if(id==='result')computeAndSend();}
-function pick(el,next,q,val){el.closest('.options').querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');answers['q'+q]=val;setTimeout(()=>goTo(next),300);}
-function showOther(btnId,inputId,next,q){const btn=document.getElementById(btnId);const input=document.getElementById(inputId);btn.closest('.options').querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));btn.classList.add('selected');input.style.display='block';input.focus();answers['q'+q]='Autre';setTimeout(()=>{goTo(next);},2500);}
+
+// COUNTRIES DATABASE
+const countries=[
+  {name:'Afghanistan',code:'+93',flag:'🇦🇫'},{name:'Afrique du Sud',code:'+27',flag:'🇿🇦'},
+  {name:'Albanie',code:'+355',flag:'🇦🇱'},{name:'Algérie',code:'+213',flag:'🇩🇿'},
+  {name:'Allemagne',code:'+49',flag:'🇩🇪'},{name:'Angola',code:'+244',flag:'🇦🇴'},
+  {name:'Arabie Saoudite',code:'+966',flag:'🇸🇦'},{name:'Argentine',code:'+54',flag:'🇦🇷'},
+  {name:'Australie',code:'+61',flag:'🇦🇺'},{name:'Autriche',code:'+43',flag:'🇦🇹'},
+  {name:'Belgique',code:'+32',flag:'🇧🇪'},{name:'Bénin',code:'+229',flag:'🇧🇯'},
+  {name:'Brésil',code:'+55',flag:'🇧🇷'},{name:'Burkina Faso',code:'+226',flag:'🇧🇫'},
+  {name:'Burundi',code:'+257',flag:'🇧🇮'},{name:'Cameroun',code:'+237',flag:'🇨🇲'},
+  {name:'Canada',code:'+1',flag:'🇨🇦'},{name:'Centrafrique',code:'+236',flag:'🇨🇫'},
+  {name:'Chine',code:'+86',flag:'🇨🇳'},{name:'Comores',code:'+269',flag:'🇰🇲'},
+  {name:'Congo',code:'+242',flag:'🇨🇬'},{name:'Côte d\'Ivoire',code:'+225',flag:'🇨🇮'},
+  {name:'Djibouti',code:'+253',flag:'🇩🇯'},{name:'Égypte',code:'+20',flag:'🇪🇬'},
+  {name:'Émirats Arabes Unis',code:'+971',flag:'🇦🇪'},{name:'Espagne',code:'+34',flag:'🇪🇸'},
+  {name:'États-Unis',code:'+1',flag:'🇺🇸'},{name:'Éthiopie',code:'+251',flag:'🇪🇹'},
+  {name:'France',code:'+33',flag:'🇫🇷'},{name:'Gabon',code:'+241',flag:'🇬🇦'},
+  {name:'Gambie',code:'+220',flag:'🇬🇲'},{name:'Ghana',code:'+233',flag:'🇬🇭'},
+  {name:'Guinée',code:'+224',flag:'🇬🇳'},{name:'Guinée-Bissau',code:'+245',flag:'🇬🇼'},
+  {name:'Guinée Équatoriale',code:'+240',flag:'🇬🇶'},{name:'Haïti',code:'+509',flag:'🇭🇹'},
+  {name:'Inde',code:'+91',flag:'🇮🇳'},{name:'Indonésie',code:'+62',flag:'🇮🇩'},
+  {name:'Italie',code:'+39',flag:'🇮🇹'},{name:'Japon',code:'+81',flag:'🇯🇵'},
+  {name:'Kenya',code:'+254',flag:'🇰🇪'},{name:'Liban',code:'+961',flag:'🇱🇧'},
+  {name:'Libéria',code:'+231',flag:'🇱🇷'},{name:'Libye',code:'+218',flag:'🇱🇾'},
+  {name:'Madagascar',code:'+261',flag:'🇲🇬'},{name:'Mali',code:'+223',flag:'🇲🇱'},
+  {name:'Maroc',code:'+212',flag:'🇲🇦'},{name:'Martinique',code:'+596',flag:'🇲🇶'},
+  {name:'Maurice',code:'+230',flag:'🇲🇺'},{name:'Mauritanie',code:'+222',flag:'🇲🇷'},
+  {name:'Mexique',code:'+52',flag:'🇲🇽'},{name:'Mozambique',code:'+258',flag:'🇲🇿'},
+  {name:'Namibie',code:'+264',flag:'🇳🇦'},{name:'Niger',code:'+227',flag:'🇳🇪'},
+  {name:'Nigéria',code:'+234',flag:'🇳🇬'},{name:'Norvège',code:'+47',flag:'🇳🇴'},
+  {name:'Nouvelle-Zélande',code:'+64',flag:'🇳🇿'},{name:'Ouganda',code:'+256',flag:'🇺🇬'},
+  {name:'Pakistan',code:'+92',flag:'🇵🇰'},{name:'Pays-Bas',code:'+31',flag:'🇳🇱'},
+  {name:'Philippines',code:'+63',flag:'🇵🇭'},{name:'Portugal',code:'+351',flag:'🇵🇹'},
+  {name:'RD Congo',code:'+243',flag:'🇨🇩'},{name:'République Dominicaine',code:'+1',flag:'🇩🇴'},
+  {name:'Réunion',code:'+262',flag:'🇷🇪'},{name:'Royaume-Uni',code:'+44',flag:'🇬🇧'},
+  {name:'Rwanda',code:'+250',flag:'🇷🇼'},{name:'Sénégal',code:'+221',flag:'🇸🇳'},
+  {name:'Sierra Leone',code:'+232',flag:'🇸🇱'},{name:'Somalie',code:'+252',flag:'🇸🇴'},
+  {name:'Soudan',code:'+249',flag:'🇸🇩'},{name:'Suisse',code:'+41',flag:'🇨🇭'},
+  {name:'Tanzanie',code:'+255',flag:'🇹🇿'},{name:'Tchad',code:'+235',flag:'🇹🇩'},
+  {name:'Togo',code:'+228',flag:'🇹🇬'},{name:'Tunisie',code:'+216',flag:'🇹🇳'},
+  {name:'Turquie',code:'+90',flag:'🇹🇷'},{name:'Zimbabwe',code:'+263',flag:'🇿🇼'},
+];
+
+let selectedCountry=countries.find(c=>c.name==='Togo');
+
+function renderCountries(list){
+  const el=document.getElementById('country-list');
+  el.innerHTML=list.map((c,i)=>`<div class="country-item${c.name===selectedCountry.name?' selected-item':''}" onclick="selectCountry(${countries.indexOf(c)})"><span class="country-flag">${c.flag}</span><span class="country-name">${c.name}</span><span class="country-code-badge">${c.code}</span></div>`).join('');
+}
+
+function filterCountries(q){
+  const filtered=countries.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())||c.code.includes(q));
+  renderCountries(filtered);
+}
+
+function selectCountry(idx){
+  selectedCountry=countries[idx];
+  document.getElementById('country-display').textContent=`${selectedCountry.flag} ${selectedCountry.code}`;
+  document.getElementById('country-dropdown').classList.remove('open');
+}
+
+function toggleDropdown(){
+  const dd=document.getElementById('country-dropdown');
+  dd.classList.toggle('open');
+  if(dd.classList.contains('open')){
+    renderCountries(countries);
+    dd.querySelector('.country-search-input').focus();
+    const sel=dd.querySelector('.selected-item');
+    if(sel)sel.scrollIntoView({block:'center'});
+  }
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.country-selector')){
+    document.getElementById('country-dropdown').classList.remove('open');
+  }
+});
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='result')computeAndSend();
+}
+
+function pick(el,next,q,val){
+  el.closest('.options').querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers['q'+q]=val;
+  setTimeout(()=>goTo(next),300);
+}
+
+function showOther(btnId,inputId,next,q){
+  const btn=document.getElementById(btnId);
+  const input=document.getElementById(inputId);
+  btn.closest('.options').querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  btn.classList.add('selected');
+  input.style.display='block';
+  input.focus();
+  answers['q'+q]='Autre';
+  setTimeout(()=>goTo(next),2500);
+}
+
 function saveOther(q,val){answers['q'+q]='Autre: '+val;}
+
 function computeAndSend(){
   const eScore={'Moins de 30 min':10,'30 min à 1h':40,'1h à 2h':70,'Plus de 2h':100}[answers.q3]||50;
   const dScore={'Moins de 5':10,'Entre 5 et 10':40,'Entre 10 et 20':70,'Plus de 20':100}[answers.q6]||50;
-  const aScore={'Ne sait pas comment utiliser':80,'Peur de faire des erreurs':70,'Pas sur que ca marche':60,'Confidentialité':50}[answers.q11]||60;
+  const aScore={'Ne sait pas comment utiliser':80,'Peur de faire des erreurs':70,'Pas sûr que ça marche':60,'Confidentialité':50}[answers.q11]||60;
   const total=Math.round((eScore+dScore+aScore)/3);
   document.getElementById('score-display').textContent=total+'%';
   document.getElementById('email-gain').textContent=eScore>=70?'+5h/sem':eScore>=40?'+3h/sem':'+1h/sem';
   document.getElementById('doc-gain').textContent=dScore>=70?'+4h/sem':dScore>=40?'+2h/sem':'+1h/sem';
   document.getElementById('ai-level').textContent=aScore>=70?'Fort potentiel':aScore>=40?'Modéré':'Déjà avancé';
-  setTimeout(()=>{document.getElementById('bar-email').style.width=eScore+'%';document.getElementById('bar-doc').style.width=dScore+'%';document.getElementById('bar-ai').style.width=aScore+'%';},300);
+  setTimeout(()=>{
+    document.getElementById('bar-email').style.width=eScore+'%';
+    document.getElementById('bar-doc').style.width=dScore+'%';
+    document.getElementById('bar-ai').style.width=aScore+'%';
+  },300);
   if(total>=70){document.getElementById('result-title').textContent='Vous perdez beaucoup de temps chaque semaine';document.getElementById('result-desc').textContent="L'IA peut prendre en charge la majorité de vos tâches répétitives. Le potentiel de gain est très élevé.";}
   else if(total>=40){document.getElementById('result-title').textContent='Vous avez un potentiel de gain significatif';document.getElementById('result-desc').textContent="Votre profil montre des opportunités réelles pour déléguer certaines tâches à l'IA.";}
   else{document.getElementById('result-title').textContent='Vous gérez bien votre temps';document.getElementById('result-desc').textContent="L'IA peut encore vous aider à aller plus loin sur certaines tâches spécifiques.";}
   fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...answers,date:new Date().toISOString(),score:total})}).catch(()=>{});
 }
+
 function submitPhone(){
-  const code=document.getElementById('country-code').value;
   const num=document.getElementById('phone-input').value.trim();
   if(!num||num.length<6){document.getElementById('phone-input').style.borderColor='var(--accent)';document.getElementById('phone-input').placeholder='Entrez votre numéro';return;}
-  fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...answers,whatsapp:code+num,date:new Date().toISOString()})}).catch(()=>{});
+  const fullPhone=selectedCountry.code+num;
+  fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({...answers,whatsapp:fullPhone,pays:selectedCountry.name,date:new Date().toISOString()})}).catch(()=>{});
   document.querySelector('.whatsapp-btn').style.display='none';
   document.querySelector('.skip-btn').style.display='none';
   document.getElementById('success-box').style.display='block';
 }
+
+// Init country display
+document.getElementById('country-display').textContent=`${selectedCountry.flag} ${selectedCountry.code}`;
 </script>
 </body>
 </html>
