@@ -385,17 +385,17 @@ html,body{height:100%;overflow-x:hidden;background:var(--bg);font-family:Georgia
   <div class="prog-label">14 / 15</div>
   <div class="question">Qu'est-ce qui vous empêche d'utiliser l'IA au quotidien ?</div>
   <div class="options">
-    <button class="option" onclick="pick(this,'result',11,'Ne sait pas comment utiliser')"><span class="opt-icon"><svg><use href="#ic-help"/></svg></span>Je ne sais pas concrètement comment l'utiliser</button>
-    <button class="option" onclick="pick(this,'result',11,'Peur de faire des erreurs')"><span class="opt-icon"><svg><use href="#ic-frown"/></svg></span>J'ai peur de faire des erreurs ou de perdre du temps</button>
-    <button class="option" onclick="pick(this,'result',11,'Pas sûr que ça marche')"><span class="opt-icon"><svg><use href="#ic-meh"/></svg></span>Je ne suis pas sûr que ça marche pour mon métier</button>
-    <button class="option" onclick="pick(this,'result',11,'Confidentialité')"><span class="opt-icon"><svg><use href="#ic-lock"/></svg></span>Les questions de confidentialité me freinent</button>
+    <button class="option" onclick="pick(this,'s15',11,'Ne sait pas comment utiliser')"><span class="opt-icon"><svg><use href="#ic-help"/></svg></span>Je ne sais pas concrètement comment l'utiliser</button>
+    <button class="option" onclick="pick(this,'s15',11,'Peur de faire des erreurs')"><span class="opt-icon"><svg><use href="#ic-frown"/></svg></span>J'ai peur de faire des erreurs ou de perdre du temps</button>
+    <button class="option" onclick="pick(this,'s15',11,'Pas sûr que ça marche')"><span class="opt-icon"><svg><use href="#ic-meh"/></svg></span>Je ne suis pas sûr que ça marche pour mon métier</button>
+    <button class="option" onclick="pick(this,'s15',11,'Confidentialité')"><span class="opt-icon"><svg><use href="#ic-lock"/></svg></span>Les questions de confidentialité me freinent</button>
     <button class="option" id="ob11" onclick="showOther('ob11','oi11','s12',11)"><span class="opt-icon"><svg><use href="#ic-edit"/></svg></span>Autre</button>
     <input class="other-input" id="oi11" placeholder="Décrivez votre blocage..." oninput="saveOther(11,this.value)">
   </div>
 </div>
 
-<!-- Q12 -->
-<div id="result" class="screen">
+<!-- Q15 -->
+<div id="s15" class="screen">
   <div class="logo">Diagnostic IA</div>
   <div class="prog-wrap"><div class="prog-bar" style="width:100%"></div></div>
   <div class="prog-label">15 / 15</div>
@@ -568,7 +568,8 @@ const screenPages = {
   's12': {num: 12, label: 'Q12 - Temps rédaction doc'},
   's13': {num: 13, label: 'Q13 - Situation documents'},
   's14': {num: 14, label: 'Q14 - Blocage IA'},
-  'result': {num: 15, label: 'Q15 - Budget + Résultats'}
+  's15': {num: 15, label: 'Q15 - Budget investissement'},
+  'result': {num: 16, label: 'Page résultats'}
 };
 
 let currentScreen = 's0';
